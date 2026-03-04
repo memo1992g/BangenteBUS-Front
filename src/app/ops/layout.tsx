@@ -5,21 +5,15 @@ import { useRouter, usePathname } from "next/navigation";
 import { getAuthToken } from "@/lib/http";
 import { OpsSidebar } from "@/components/layout/OpsSidebar";
 
-// TEMP: allow entering Ops without login while backend auth is being adjusted.
-// Set NEXT_PUBLIC_BYPASS_LOGIN=false to restore normal behavior.
-const BYPASS_LOGIN = process.env.NEXT_PUBLIC_BYPASS_LOGIN !== "false";
-
-// TEMP: allow entering Ops without login while backend auth is being adjusted.
-// Set NEXT_PUBLIC_BYPASS_LOGIN=false to restore normal behavior.
-const BYPASS_LOGIN = process.env.NEXT_PUBLIC_BYPASS_LOGIN !== "false";
-
 export default function OpsLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
-    if (BYPASS_LOGIN) {
+    // TEMP: allow entering Ops without login while backend auth is being adjusted.
+    // Set NEXT_PUBLIC_BYPASS_LOGIN=false to restore normal behavior.
+    if (process.env.NEXT_PUBLIC_BYPASS_LOGIN !== "false") {
       setIsAuthorized(true);
       return;
     }
