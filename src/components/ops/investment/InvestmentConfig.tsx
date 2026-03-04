@@ -12,7 +12,7 @@ export function InvestmentConfig() {
     setLoading(true);
     try {
       const res = await InvestmentService.listConvocatorias();
-      setConvocatorias(res || []);
+      setConvocatorias(Array.isArray(res) ? res : []);
     } catch (e: any) {
       setError(e.message || "Error cargando convocatorias");
     } finally {
