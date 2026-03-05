@@ -62,6 +62,9 @@ export const modules: ModuleConfig[] = [
       { id: "report", label: "Reporte BCV (GET)", method: "GET", path: endpoints.exchangeBcv.report },
       { id: "interventions", label: "Intervenciones BCV (GET)", method: "GET", path: endpoints.exchangeBcv.interventions },
       { id: "substitutions", label: "Sustituciones BCV (GET)", method: "GET", path: endpoints.exchangeBcv.substitutions },
+      { id: "summary", label: "Summary BCV (GET)", method: "GET", path: endpoints.exchangeBcv.summary },
+      { id: "export", label: "Export BCV (GET)", method: "GET", path: endpoints.exchangeBcv.export },
+      { id: "exclude", label: "Exclude BCV (POST)", method: "POST", path: endpoints.exchangeBcv.exclude("ORDER_REFERENCE") },
     ],
   },
   {
@@ -99,6 +102,7 @@ export const modules: ModuleConfig[] = [
       { id: "cancel-eligible", label: "Órdenes Cancelables (GET)", method: "GET", path: endpoints.investmentOps.cancelEligible },
       { id: "cancel-execute", label: "Ejecutar Cancelación (POST)", method: "POST", path: endpoints.investmentOps.cancelExecute, requestTemplate: {} },
       { id: "precancel", label: "Pre-Cancelar (GET)", method: "GET", path: endpoints.investmentOps.precancel },
+      { id: "precancel-update", label: "Actualizar Pre-Cancelación (PUT)", method: "PUT", path: endpoints.investmentOps.precancelById(1), requestTemplate: {} },
     ],
   },
   {

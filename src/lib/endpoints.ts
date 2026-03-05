@@ -4,6 +4,8 @@ export const endpoints = {
     refresh: "/api/auth/refresh",
     logout: "/api/auth/logout",
     me: "/api/auth/me",
+    info: "/api/auth/info",
+    test: "/api/auth/test",
   },
 
   // MassPaymentsAdminRestController → /api/admin/mass-payments
@@ -47,8 +49,10 @@ export const endpoints = {
   // ExchangeBcvAdminRestController → /api/admin/exchange/bcv
   exchangeBcv: {
     report: "/api/admin/exchange/bcv/report",                              // GET
+    summary: "/api/admin/exchange/bcv/summary",                             // GET
     interventions: "/api/admin/exchange/bcv/interventions",                 // GET
     substitutions: "/api/admin/exchange/bcv/substitutions",                 // GET
+    export: "/api/admin/exchange/bcv/export",                               // GET
     exclude: (ref: string) => `/api/admin/exchange/bcv/exclude/${ref}` as const, // POST
   },
 

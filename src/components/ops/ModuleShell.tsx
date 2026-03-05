@@ -20,7 +20,7 @@ export function ModuleShell({
           {description ? <p className="mt-1 text-sm text-slate-600">{description}</p> : null}
         </div>
         <Link href="/ops" className="rounded-xl border px-3 py-2 text-sm hover:bg-slate-50">
-          ← Volver
+          Inicio Operativo
         </Link>
       </div>
       <div className="mt-6">{children}</div>

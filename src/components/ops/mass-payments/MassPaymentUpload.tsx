@@ -7,6 +7,7 @@ import { StatusBadge } from "../StatusBadge";
 export function MassPaymentUpload() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [listData, setListData] = useState<any>(null);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string>("");
 
@@ -20,6 +21,20 @@ export function MassPaymentUpload() {
     sendFile: "0",
     isPayrollPayment: "1",
   });
+
+  const handleList = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await MassPaymentsService.list();
+      setListData(res);
+      setResult(null);
+    } catch (e: any) {
+      setError(e.message || "Error listando pagos");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleValidate = async () => {
     if (!file) return;
@@ -87,6 +102,13 @@ export function MassPaymentUpload() {
 
       <div className="flex gap-3">
         <button
+          onClick={handleList}
+          disabled={loading}
+          className="rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-200 disabled:opacity-50"
+        >
+          {loading ? "Cargando..." : "Listar"}
+        </button>
+        <button
           onClick={handleValidate}
           disabled={!file || loading}
           className="rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-200 disabled:opacity-50"
@@ -105,6 +127,15 @@ export function MassPaymentUpload() {
       {error && (
         <div className="mt-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">
           {error}
+        </div>
+      )}
+
+      {listData && (
+        <div className="mt-4 rounded-xl bg-slate-50 p-4">
+          <div className="text-sm font-medium mb-2">Listado</div>
+          <pre className="overflow-auto rounded-lg bg-white p-3 text-xs border">
+            {JSON.stringify(listData, null, 2)}
+          </pre>
         </div>
       )}
 
