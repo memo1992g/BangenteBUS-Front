@@ -6,7 +6,8 @@ export class ApiError extends Error {
   }
 }
 
-const RAW_BASE_URL = process.env.NEXT_PUBLIC_WEB_API_URL || "http://localhost:9095/api";
+// Use same-origin /api by default to avoid browser CORS issues.
+const RAW_BASE_URL = process.env.NEXT_PUBLIC_WEB_API_URL || "/api";
 
 function normalizeBaseUrl(baseUrl: string): string {
   return baseUrl.replace(/\/+$/, "");
@@ -15,7 +16,6 @@ function normalizeBaseUrl(baseUrl: string): string {
 function buildApiUrl(baseUrl: string, path: string): string {
   const normalizedBase = normalizeBaseUrl(baseUrl);
 
-  // If base already ends in /api and path also starts with /api, avoid /api/api duplication.
   if (normalizedBase.endsWith("/api") && path.startsWith("/api/")) {
     return `${normalizedBase}${path.slice(4)}`;
   }
