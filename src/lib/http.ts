@@ -6,11 +6,21 @@ export class ApiError extends Error {
   }
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_WEB_API_URL;
+const RAW_BASE_URL = process.env.NEXT_PUBLIC_WEB_API_URL || "http://localhost:9095/api";
 
-if (!BASE_URL) {
-  // eslint-disable-next-line no-console
-  console.warn("NEXT_PUBLIC_WEB_API_URL is not set");
+function normalizeBaseUrl(baseUrl: string): string {
+  return baseUrl.replace(/\/+$/, "");
+}
+
+function buildApiUrl(baseUrl: string, path: string): string {
+  const normalizedBase = normalizeBaseUrl(baseUrl);
+
+  // If base already ends in /api and path also starts with /api, avoid /api/api duplication.
+  if (normalizedBase.endsWith("/api") && path.startsWith("/api/")) {
+    return `${normalizedBase}${path.slice(4)}`;
+  }
+
+  return `${normalizedBase}${path}`;
 }
 
 export function getAuthToken(): string | null {
@@ -36,7 +46,7 @@ export async function http<T>(
   body?: unknown,
   init?: RequestInit
 ): Promise<T> {
-  const url = `${BASE_URL}${path}`;
+  const url = buildApiUrl(RAW_BASE_URL, path);
   const token = getAuthToken();
   const isFormData = body instanceof FormData;
 
