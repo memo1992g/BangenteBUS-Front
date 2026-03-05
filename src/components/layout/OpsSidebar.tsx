@@ -44,8 +44,11 @@ const sections: NavSection[] = [
     title: "Mantenimiento Divisas · BCV",
     items: [
       { label: "Report", href: "/ops/exchange-bcv?view=report" },
+      { label: "Summary", href: "/ops/exchange-bcv?view=summary" },
       { label: "Interventions", href: "/ops/exchange-bcv?view=interventions" },
       { label: "Substitutions", href: "/ops/exchange-bcv?view=substitutions" },
+      { label: "Export", href: "/ops/exchange-bcv?view=export" },
+      { label: "Exclude", href: "/ops/exchange-bcv?view=exclude" },
     ],
   },
   {

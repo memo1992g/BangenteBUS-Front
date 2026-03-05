@@ -38,20 +38,21 @@ export async function http<T>(
 ): Promise<T> {
   const url = `${BASE_URL}${path}`;
   const token = getAuthToken();
+  const isFormData = body instanceof FormData;
 
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...(init?.headers as Record<string, string> || {}),
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
+    ...((init?.headers as Record<string, string>) || {}),
   };
 
   if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+    headers.Authorization = `Bearer ${token}`;
   }
 
   const res = await fetch(url, {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined,
+    body: body ? (isFormData ? (body as FormData) : JSON.stringify(body)) : undefined,
     cache: "no-store",
     ...init,
   });
