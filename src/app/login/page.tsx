@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { http, setAuthToken } from "@/lib/http";
-import { endpoints } from "@/lib/endpoints";
+import { AuthService, extractTokenFromAuthResponse } from "@/services/auth.service";
+
+const BYPASS_LOGIN = process.env.NEXT_PUBLIC_BYPASS_LOGIN !== "false";
 
 const BYPASS_LOGIN = process.env.NEXT_PUBLIC_BYPASS_LOGIN !== "false";
 
@@ -20,16 +21,13 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await http<any>(endpoints.auth.login, "POST", {
-        username,
-        password,
-      });
+      const res = await AuthService.login(username, password);
+      const token = extractTokenFromAuthResponse(res);
 
-      if (res.success && res.token) {
-        setAuthToken(res.token);
+      if (token) {
         router.push("/ops");
       } else {
-        setError(res.message || "Error de autenticación");
+        setError((res as any)?.message || "Credenciales inválidas o token no recibido");
       }
     } catch (err: any) {
       setError(err.message || "Error de conexión con el servidor");

@@ -8,6 +8,7 @@ export class ApiError extends Error {
 
 // Use same-origin /api by default to avoid browser CORS issues.
 const RAW_BASE_URL = process.env.NEXT_PUBLIC_WEB_API_URL || "/api";
+const BYPASS_LOGIN = process.env.NEXT_PUBLIC_BYPASS_LOGIN !== "false";
 
 function normalizeBaseUrl(baseUrl: string): string {
   return baseUrl.replace(/\/+$/, "");
@@ -67,7 +68,12 @@ export async function http<T>(
     ...init,
   });
 
-  if (res.status === 401 && typeof window !== "undefined" && !path.includes("/api/auth/login")) {
+  if (
+    res.status === 401 &&
+    typeof window !== "undefined" &&
+    !path.includes("/api/auth/login") &&
+    !BYPASS_LOGIN
+  ) {
     removeAuthToken();
     window.location.href = "/login";
   }
