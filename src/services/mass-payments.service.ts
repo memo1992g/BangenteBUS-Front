@@ -9,12 +9,7 @@ export class MassPaymentsService {
       formData.append(key, String(value));
     });
 
-    return http(endpoints.massPayments.validate, "POST", formData, {
-      headers: {
-        // Fetch will automatically set the correct Content-Type for FormData
-        "Content-Type": undefined as any,
-      },
-    });
+    return http(endpoints.massPayments.validate, "POST", formData);
   }
 
   static async process(file: File, additionalData: Record<string, any>) {
@@ -24,11 +19,7 @@ export class MassPaymentsService {
       formData.append(key, String(value));
     });
 
-    return http(endpoints.massPayments.process, "POST", formData, {
-      headers: {
-        "Content-Type": undefined as any,
-      },
-    });
+    return http(endpoints.massPayments.process, "POST", formData);
   }
 
   static async list(params?: Record<string, any>) {

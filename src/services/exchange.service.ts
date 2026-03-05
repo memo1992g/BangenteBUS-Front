@@ -1,36 +1,28 @@
 import { http } from "@/lib/http";
 import { endpoints } from "@/lib/endpoints";
 
+const exchangeMap = {
+  balances: endpoints.exchange.balances,
+  rates: endpoints.exchange.rates,
+  commissions: endpoints.exchange.commissions,
+  channels: endpoints.exchange.channels,
+  parameters: endpoints.exchange.parameters,
+} as const;
+
+export type ExchangeConfigView = keyof typeof exchangeMap;
+
 export class ExchangeService {
-  static async getBalances() {
-    return http(endpoints.exchange.balances, "GET");
+  static getConfig(view: ExchangeConfigView) {
+    return http<any>(exchangeMap[view], "GET");
   }
 
-  static async updateBalances(data: any) {
-    return http(endpoints.exchange.balances, "PUT", data);
+  static updateConfig(view: ExchangeConfigView, data: any) {
+    return http<any>(exchangeMap[view], "PUT", data);
   }
 
-  static async getRates() {
-    return http(endpoints.exchange.rates, "GET");
-  }
+  static getBalances() { return this.getConfig("balances"); }
+  static updateBalances(data: any) { return this.updateConfig("balances", data); }
+  static getRates() { return this.getConfig("rates"); }
+  static updateRates(data: any) { return this.updateConfig("rates", data); }
 
-  static async updateRates(data: any) {
-    return http(endpoints.exchange.rates, "PUT", data);
-  }
-
-  static async createIntervention(data: any) {
-    return http(endpoints.exchangeOps.intervention, "POST", data);
-  }
-
-  static async createRetail(data: any) {
-    return http(endpoints.exchangeOps.retail, "POST", data);
-  }
-
-  static async createDesk(data: any) {
-    return http(endpoints.exchangeOps.desk, "POST", data);
-  }
-
-  static async getOrders() {
-    return http(endpoints.exchangeOps.orders, "GET");
-  }
 }
