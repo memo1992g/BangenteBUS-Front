@@ -6,6 +6,8 @@ import { AuthService, extractTokenFromAuthResponse } from "@/services/auth.servi
 
 const BYPASS_LOGIN = process.env.NEXT_PUBLIC_BYPASS_LOGIN !== "false";
 
+const BYPASS_LOGIN = process.env.NEXT_PUBLIC_BYPASS_LOGIN !== "false";
+
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
